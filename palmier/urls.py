@@ -1,4 +1,6 @@
-from django.urls import path, include
+from django.contrib import admin
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 from .views import (
     PlantationViewSet,
@@ -6,6 +8,7 @@ from .views import (
     ProductionViewSet,
     VenteViewSet,
     MouvementCaisseViewSet,
+    statistiques_productions
 )
 
 router = DefaultRouter()
@@ -16,5 +19,8 @@ router.register(r'ventes', VenteViewSet)
 router.register(r'mouvements-caisse', MouvementCaisseViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api/productions/statistiques/', statistiques_productions, name='statistiques_productions'),
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ] 
